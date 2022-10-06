@@ -28,6 +28,7 @@
                 android:layout_height="match_parent"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
+                android:contentDescription="@{mainViewModel.pictureOfDay!=null?mainViewModel.pictureOfDay.title:@string/error_loading_photos}"
                 app:imageUrl="@{mainViewModel.pictureOfDay}"
                 app:srcCompat="@drawable/placeholder_picture_of_day"/>
 

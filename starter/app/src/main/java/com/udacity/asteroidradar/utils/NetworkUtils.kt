@@ -1,7 +1,10 @@
 package com.udacity.asteroidradar.utils
 
 import com.udacity.asteroidradar.models.Asteroid
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.json.JSONObject
+import java.net.InetAddress
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -81,4 +84,16 @@ fun getDate(afterDays: Int? = 0): String {
     val dateFormat = SimpleDateFormat(Constants.API_QUERY_DATE_FORMAT, Locale.ENGLISH)
 
     return dateFormat.format(calendar.time)
+}
+
+// ToDo: Udacity SUGGESTION: check the connectivity
+suspend fun isInternetAvailable(): Boolean {
+    return try {
+        withContext(Dispatchers.IO){
+            val ipAddress: InetAddress = InetAddress.getByName("google.com")
+            !ipAddress.equals("")
+        }
+    } catch (e: Exception) {
+        false
+    }
 }

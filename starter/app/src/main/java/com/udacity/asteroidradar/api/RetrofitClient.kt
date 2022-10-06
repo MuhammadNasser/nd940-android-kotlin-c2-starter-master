@@ -3,6 +3,7 @@ package com.udacity.asteroidradar.api
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import com.udacity.asteroidradar.BuildConfig
 import com.udacity.asteroidradar.utils.Constants.BASE_URL
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -17,7 +18,16 @@ object RetrofitClient {
 
     private val client = OkHttpClient.Builder()
         .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-        .build()
+        //Todo: Udacity SUGGESTION use query parameter and add API key at local.properties
+        .addInterceptor { chain ->
+            val url = chain
+                .request()
+                .url
+                .newBuilder()
+                .addQueryParameter("api_key", BuildConfig.API_KEY)
+                .build()
+            chain.proceed(chain.request().newBuilder().url(url).build())
+        }.build()
 
     private val moshiBuilder = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
 

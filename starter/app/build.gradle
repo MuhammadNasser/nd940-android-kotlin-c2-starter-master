@@ -15,10 +15,16 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
-        //Todo add fix table generation for room DB
     }
+
+    def localProperties = new Properties()
+    localProperties.load(new FileInputStream(rootProject.file("local.properties")))
+
     buildTypes {
+        debug {
+            buildConfigField("String", "API_KEY", "\"" + localProperties['apiKey'] + "\"")
+        }
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -78,4 +84,7 @@ dependencies {
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+//     ToDo: Udacity SUGGESTION: use Timber in logs
+    implementation 'com.jakewharton.timber:timber:4.7.1'
 }

@@ -4,6 +4,7 @@ import com.udacity.asteroidradar.api.RetrofitClient
 import com.udacity.asteroidradar.database.AsteroidDataBase
 import com.udacity.asteroidradar.models.PictureOfDay
 import com.udacity.asteroidradar.utils.asDatabaseModel
+import com.udacity.asteroidradar.utils.getDate
 import com.udacity.asteroidradar.utils.parseAsteroidsJsonResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -35,6 +36,12 @@ class AsteroidRepo(private val dataBase: AsteroidDataBase) {
             pictureOfDay
         } else {
             null
+        }
+    }
+
+    suspend fun deleteOldAsteroidsData() {
+        withContext(Dispatchers.IO) {
+            dataBase.asteroidDataBaseDao.deleteOldAsteroidsData(getDate())
         }
     }
 }

@@ -1,7 +1,6 @@
 package com.udacity.asteroidradar.viewmodels
 
 import android.app.Application
-import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -12,8 +11,10 @@ import com.udacity.asteroidradar.models.Asteroid
 import com.udacity.asteroidradar.models.PictureOfDay
 import com.udacity.asteroidradar.repository.AsteroidRepo
 import com.udacity.asteroidradar.utils.getDate
+import com.udacity.asteroidradar.utils.isInternetAvailable
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class MainViewModel(private val dataBase: AsteroidDataBase, application: Application) :
     AndroidViewModel(application) {
@@ -35,11 +36,24 @@ class MainViewModel(private val dataBase: AsteroidDataBase, application: Applica
     init {
         viewModelScope.launch {
             try {
-                asteroidRepo.refreshAsteroidData(getDate(), getDate(7))
-                _pictureOfDay.value = asteroidRepo.loadPictureOfDay()
+
+//               ToDo: Udacity SUGGESTION: check the connectivity
+                if (isInternetAvailable()) {
+                    asteroidRepo.refreshAsteroidData(getDate(), getDate(7))
+                    _pictureOfDay.value = asteroidRepo.loadPictureOfDay()
+                } else {
+                    Toast.makeText(
+                        application,
+                        "Please check your internet Connection!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
             } catch (e: Exception) {
                 Toast.makeText(application, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
-                Log.e("MainViewModel", e.message.toString())
+
+                //     ToDo: Udacity SUGGESTION: use Timber in logs
+                Timber.e(e.message.toString())
             }
         }
         getTodayAsteroids()

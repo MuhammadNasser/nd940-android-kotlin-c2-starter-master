@@ -3,10 +3,13 @@ package com.udacity.asteroidradar
 import android.app.Application
 import android.os.Build
 import androidx.work.*
+import com.udacity.asteroidradar.work.DeleteOldDataWorker
 import com.udacity.asteroidradar.work.RefreshDataWorker
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import timber.log.Timber
+import timber.log.Timber.DebugTree
 import java.util.concurrent.TimeUnit
 
 class AsteroidApplication : Application() {
@@ -15,6 +18,7 @@ class AsteroidApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        Timber.plant(DebugTree())
         delayedInit()
     }
 
@@ -34,6 +38,7 @@ class AsteroidApplication : Application() {
             }.build()
 
         setupRefreshDataWorker(constraints)
+        setupDeleteOldDataWorker(constraints)
     }
 
     private fun setupRefreshDataWorker(constraints: Constraints) {
@@ -44,6 +49,20 @@ class AsteroidApplication : Application() {
 
         WorkManager.getInstance().enqueueUniquePeriodicWork(
             RefreshDataWorker.WORK_NAME,
+            ExistingPeriodicWorkPolicy.KEEP,
+            repeatingRequest
+        )
+    }
+
+    // Todo: Udacity SUGGESTION provide a provision for deletion of old data
+    private fun setupDeleteOldDataWorker(constraints: Constraints) {
+        val repeatingRequest =
+            PeriodicWorkRequestBuilder<DeleteOldDataWorker>(1, TimeUnit.DAYS)
+                .setConstraints(constraints)
+                .build()
+
+        WorkManager.getInstance().enqueueUniquePeriodicWork(
+            DeleteOldDataWorker.WORK_NAME,
             ExistingPeriodicWorkPolicy.KEEP,
             repeatingRequest
         )

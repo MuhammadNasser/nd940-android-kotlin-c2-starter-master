@@ -7,12 +7,18 @@ import com.squareup.picasso.Picasso
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.models.PictureOfDay
 
+// ToDo Udacity REQUIRED to add missing contentDescriptions
+
 @BindingAdapter("statusIcon")
 fun bindAsteroidStatusImage(imageView: ImageView, isHazardous: Boolean) {
     if (isHazardous) {
         imageView.setImageResource(R.drawable.ic_status_potentially_hazardous)
+        imageView.contentDescription =
+            imageView.resources.getString(R.string.this_is_a_potentially_hazardous_asteroid)
     } else {
         imageView.setImageResource(R.drawable.ic_status_normal)
+        imageView.contentDescription =
+            imageView.resources.getString(R.string.this_is_not_a_potentially_hazardous_asteroid)
     }
 }
 
@@ -20,8 +26,12 @@ fun bindAsteroidStatusImage(imageView: ImageView, isHazardous: Boolean) {
 fun bindDetailsStatusImage(imageView: ImageView, isHazardous: Boolean) {
     if (isHazardous) {
         imageView.setImageResource(R.drawable.asteroid_hazardous)
+        imageView.contentDescription =
+            imageView.resources.getString(R.string.this_is_a_potentially_hazardous_asteroid)
     } else {
         imageView.setImageResource(R.drawable.asteroid_safe)
+        imageView.contentDescription =
+            imageView.resources.getString(R.string.this_is_not_a_potentially_hazardous_asteroid)
     }
 }
 

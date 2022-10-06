@@ -3,6 +3,9 @@
     package="com.udacity.asteroidradar">
 
     <uses-permission android:name="android.permission.INTERNET" />
+<!--    ToDo: Udacity SUGGESTION: check the connectivity-->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:name=".AsteroidApplication"
