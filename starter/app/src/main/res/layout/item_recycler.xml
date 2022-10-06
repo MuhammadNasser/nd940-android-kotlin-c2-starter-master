@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="clickListener"
+            type="com.udacity.asteroidradar.screens.main.adapters.AsteroidsAdapter.AsteroidClickListener" />
+
+        <variable
+            name="asteroid"
+            type="com.udacity.asteroidradar.models.Asteroid" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/app_background"
+        android:onClick="@{() -> clickListener.onClick(asteroid)}"
+        android:padding="20dp">
+
+        <TextView
+            android:id="@+id/codeNameText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{asteroid.codename}"
+            android:textAlignment="textStart"
+            android:textColor="@color/default_text_color"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@+id/closeDateText"
+            app:layout_constraintEnd_toStartOf="@+id/statusImage"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Code Name" />
+
+        <TextView
+            android:id="@+id/closeDateText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{asteroid.closeApproachDate}"
+            android:textAlignment="textStart"
+            android:textColor="@color/text_grey"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/statusImage"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/codeNameText"
+            tools:text="01-01-2022" />
+
+        <ImageView
+            android:id="@+id/statusImage"
+            statusIcon="@{asteroid.isPotentiallyHazardous}"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:contentDescription="@string/hazardous_status"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/closeDateText"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
